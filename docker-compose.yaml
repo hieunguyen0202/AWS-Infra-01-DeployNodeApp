@@ -1,0 +1,28 @@
+services:
+  database:
+    image: mongo:4.4
+    container_name: "database"
+    ports:
+      - 27017:27017
+  api:
+    build:
+      context: spring-boot-student-app-api
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
+      - MONGO_URL=mongodb://database:27017/dev
+    ports:
+      - "8082:8080"
+  web:
+    build:
+      context: react-student-management
+      dockerfile: Dockerfile
+    environment:
+      - REACT_APP_API_URL=http://192.168.1.97:8082
+    ports:
+      - "3000:3000"
+    networks:
+      - webnet
+networks:
+  webnet:
+    driver: bridge
