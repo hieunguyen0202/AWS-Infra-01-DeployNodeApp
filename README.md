@@ -58,7 +58,10 @@
 
 ##### Create ECR/ECS of Front-end/Back-end
 ##### Create ECS Cluster
--Choose name `aws-infra-01-ecs-cluster`
+- Create ECR repository
+  - Front-end repo `aws-infra-01-ecr-fe-repo`
+  - Back-end repo `aws-infra-01-ecr-be-repo`
+- Create ECS Cluster and Choose name `aws-infra-01-ecs-cluster`
 - Choose AWS Fargate  
 - Add tagname: Name - `aws-infra-01-ecs-cluster`
 
