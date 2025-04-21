@@ -124,6 +124,54 @@
     - HTTP : 80 -> Forward to `aws-infra-01-frontend-tg`
     - HTTP : 80 -> Add condition path `/api/*` -> Forward to `aws-infra-01-backend-tg` (Priority 10)
 
+
+
+##### Create Back-end container ECS
+- Create task definitions for back-end `aws-infra-01-task-definition-be`
+- Choose AWS Fagate type and choose `1vCPU` and `2 GB`
+- Create new for Task execution role `aws-infra-01-task-exec-role`
+- Create container for back-end image
+    - Container name `spring-be` with Image URI (variable value)
+    - Container port `8080`
+    - Add enviroment varible `MONGO_URL` and value parameter (output URL connect MongoDB from database module and also need to modify URL)
+
+- Create service backend `aws-infra-01-service-be`
+    - Choose family for task difinitions from `aws-infra-01-task-definition-be`
+    - Choose desired tasks `1`
+    - In networking section:
+        - Choose VPC `aws-infra-01-vpc`
+        - Choose private subnet `aws-infra-01-private-subnet-1` `aws-infra-01-private-subnet-2`
+        - Choose existing security group `aws-infra-01-private-sg`
+    - Choose and enable option application load balancer and choose exsiting `aws-infra-01-alb`
+    - Choose existing Listener `80:HTTP`
+    - Choose existing target group `aws-infra-01-backend-tg`
+
+
+##### Create Front-end container ECS
+- Create task definitions for front-end `aws-infra-01-task-definition-fe`
+- Choose AWS Fagate type and choose `1vCPU` and `2 GB`
+- Choose for Task execution role `aws-infra-01-task-exec-role` from previous step
+- Create container for back-end image
+    - Container name `reactjs-fe` with Image URI (variable value)
+    - Container port `3000`
+    - Add enviroment varible `REACT_APP_API_URL` and value parameter (output URL http:// of Application loadbalancer)
+
+
+- Create frontend `aws-infra-01-service-fe`
+    - Choose family for task difinitions from `aws-infra-01-task-definition-fe`
+    - Choose desired tasks `1`
+    - In networking section:
+        - Choose VPC `aws-infra-01-vpc`
+        - Choose private subnet `aws-infra-01-private-subnet-1` `aws-infra-01-private-subnet-2`
+        - Choose existing security group `aws-infra-01-private-sg`
+    - Choose and enable option application load balancer and choose exsiting `aws-infra-01-alb`
+    - Choose existing Listener `80:HTTP`
+    - Choose existing target group `aws-infra-01-frontend-tg`
+
+
+
+
+
 ##### Create CodePipeline to Build docker image and push to ECR
 - Go to ECS service and create task difinitions `aws-infra-01-task-define`
 - Choose AWS Fargate launch type, (1vCPU and 2 GB ram)
