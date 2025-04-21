@@ -17,10 +17,38 @@ module "network" {
 
 
 module "security" {
-  source  = "../modules/security"
-  vpc_id  = module.network.vpc_id
-  public_sg_name    = var.public_sg_name
-  private_sg_name   = var.private_sg_name
-  bastion_sg_name   = var.bastion_sg_name
-  database_sg_name  = var.database_sg_name
+  source           = "../modules/security"
+  vpc_id           = module.network.vpc_id
+  public_sg_name   = var.public_sg_name
+  private_sg_name  = var.private_sg_name
+  bastion_sg_name  = var.bastion_sg_name
+  database_sg_name = var.database_sg_name
+}
+
+
+module "bastion" {
+  source                 = "../modules/bastion"
+  ami_id                 = var.ami_id
+  instance_type          = var.instance_type
+  key_name               = var.key_name
+  subnet_id              = module.network.aws_subnet_public_id[0]
+  vpc_security_group_ids = [module.security.bastion_security_group_id]
+  instance_name          = var.instance_name
+  volume_size            = var.volume_size
+} 
+
+module "database" {
+  source = "../modules/database"
+
+  parameter_group_name   = var.parameter_group_name
+  parameter_group_family = var.parameter_group_family
+  subnet_group_name      = var.subnet_group_name
+  private_subnet_ids     = module.network.aws_subnet_private_id
+  cluster_identifier     = var.cluster_identifier
+  engine_version         = var.engine_version
+  instance_class         = var.instance_class
+  instance_count         = var.instance_count
+  master_username        = var.master_username
+  master_password        = var.master_password
+  security_group_id      = module.security.database_security_group_id
 }
