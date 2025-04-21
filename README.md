@@ -56,14 +56,7 @@
 - bastion-sg `aws-infra-01-bastion-sg`
 - database-sg (Allow port 27017 from Private-sg, bastion-sg) `aws-infra-01-database-sg`
 
-##### Create ECR/ECS of Front-end/Back-end
-##### Create ECS Cluster
-- Create ECR repository
-  - Front-end repo `aws-infra-01-ecr-fe-repo`
-  - Back-end repo `aws-infra-01-ecr-be-repo`
-- Create ECS Cluster and Choose name `aws-infra-01-ecs-cluster`
-- Choose AWS Fargate  
-- Add tagname: Name - `aws-infra-01-ecs-cluster`
+
 
 ##### Create Bastion module and install mongosh
 - Choose name `aws-infra-01-bastion-vm`
@@ -114,7 +107,6 @@
     - Interval: `10`
 
 
-
 - Create Application Loadbalancer `aws-infra-01-alb`
 - Choose internet facing mode
 - Choose VPC `aws-infra-01-vpc`
@@ -124,6 +116,15 @@
     - HTTP : 80 -> Forward to `aws-infra-01-frontend-tg`
     - HTTP : 80 -> Add condition path `/api/*` -> Forward to `aws-infra-01-backend-tg` (Priority 10)
 
+
+##### Create ECR/ECS of Front-end/Back-end
+##### Create ECS Cluster
+- Create ECR repository
+  - Front-end repo `aws-infra-01-ecr-fe-repo`
+  - Back-end repo `aws-infra-01-ecr-be-repo`
+- Create ECS Cluster and Choose name `aws-infra-01-ecs-cluster`
+- Choose AWS Fargate  
+- Add tagname: Name - `aws-infra-01-ecs-cluster`
 
 
 ##### Create Back-end container ECS
@@ -167,8 +168,6 @@
     - Choose and enable option application load balancer and choose exsiting `aws-infra-01-alb`
     - Choose existing Listener `80:HTTP`
     - Choose existing target group `aws-infra-01-frontend-tg`
-
-
 
 
 

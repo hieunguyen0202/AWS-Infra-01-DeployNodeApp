@@ -43,11 +43,11 @@ variable "master_username" {
   description = "Master username for DocumentDB authentication"
 }
 
-variable "master_password" {
-  type        = string
-  description = "Master password for DocumentDB authentication"
-  sensitive   = true
-}
+# variable "master_password" {
+#   type        = string
+#   description = "Master password for DocumentDB authentication"
+#   sensitive   = true
+# }
 
 variable "security_group_id" {
   type        = string
