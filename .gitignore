@@ -10,5 +10,5 @@
 crash.log
 
 # Sensitive files
-*.tfvars
+# *.tfvars
 *.tfvars.json
